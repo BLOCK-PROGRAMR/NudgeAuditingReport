@@ -82,6 +82,9 @@ contract NudgeCampaignFactory is INudgeCampaignFactory, AccessControl {
     if (targetToken == address(0) || rewardToken == address(0)) revert ZeroAddress();
     if (holdingPeriodInSeconds == 0) revert InvalidParameter();
 
+    //@audit - The salt is generated using keccak256, which is a deterministic hash function. This salt is used to
+    // generate the address of the deployed contract.
+    // It is easy to access the attacker to generate the same salt and deploy the contract with the same address.
     // Generate deterministic salt using all parameters
     //keccack256 produces a 32 byte hash
     bytes32 salt = keccak256(
@@ -156,6 +159,7 @@ contract NudgeCampaignFactory is INudgeCampaignFactory, AccessControl {
     if (rewardToken == NATIVE_TOKEN) {
       if (msg.value != initialRewardAmount) revert IncorrectEtherAmount();
       // Deploy contract first
+      //@audit attacker is able to deploy the contract with the same address by generating the same salt.
       campaign = deployCampaign(
         holdingPeriodInSeconds,
         targetToken,
@@ -167,6 +171,8 @@ contract NudgeCampaignFactory is INudgeCampaignFactory, AccessControl {
         uuid
       );
       // Then send ETH
+      //something fissy here -reentrancy attack possible
+
       (bool sent,) = campaign.call{ value: initialRewardAmount }("");
       if (!sent) revert NativeTokenTransferFailed();
     } else {
