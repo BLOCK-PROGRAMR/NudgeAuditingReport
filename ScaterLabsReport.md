@@ -1,7 +1,7 @@
 
 
- # Nudge Protocol Audit  
-**Conducted by SCATERLABs**
+ **Nudge Protocol Audit  Audit by SCATERLABs**
+
 
 ---
 
@@ -214,9 +214,9 @@ contract MaliciousContract {
 ```
 ---
 
-### 3. Precision Loss Due to Integer Division
+## 3. Precision Loss Due to Integer Division
 
-### 📋 Description  
+### Description  
 Integer division in reward calculation can cause truncation, leading to small but cumulative precision losses.
 
 **Vulnerable Code:**
@@ -267,5 +267,7 @@ contract PrecisionLossTest is Test {
 
 ---
 
-**GithubLink:**
 
+
+*Link:*
+[View this audit on GitHub](https://github.com/BLOCK-PROGRAMR/NudgeAuditingReport/blob/2f8e819e88937210c4b2b2a527a4a98e83da07e8/ScaterLabsReport.md)
